@@ -3,43 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Busetas de Lusitania - Park Smart</title>
-  <!-- Tailwind CSS para diseño moderno -->
+  <title>Busetas de Flotax - Park Smart</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: 'Inter', 'Segoe UI', sans-serif; background: #f7fafc; padding: 20px; }
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-    
-    .print-btn {
-      margin: 30px auto;
-      display: block;
-      padding: 14px 40px;
-      background: #2196F3;
-      color: white;
-      font-weight: bold;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(33,150,243,0.3);
-      cursor: pointer;
-    }
-    @media print {
-      body { background: white; padding: 10px; }
-      .print-btn { display: none; }
-      .shadow-lg { box-shadow: none; }
-    }
+    .print-btn { margin: 30px auto; display: block; padding: 14px 40px; background: #2196F3; color: white; font-weight: bold; border-radius: 12px; box-shadow: 0 4px 15px rgba(33,150,243,0.3); cursor: pointer; }
+    @media print { body { background: white; padding: 10px; } .print-btn { display: none; } .shadow-lg { box-shadow: none; } }
   </style>
 </head>
 <body class="bg-gray-50">
-
-  <div class="max-w-5xl mx-auto">
-    <h1 class="text-4xl font-bold text-center text-blue-800 mb-8 mt-10">
-      Busetas de Lusitania
-    </h1>
-
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold text-center text-blue-800 mb-8 mt-10">Busetas de Flotax</h1>
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
       <table class="w-full table-auto">
         <thead>
-          <tr class="bg-gradient-to-r from-blue-700 to-blue-900 text-white">
-            <th class="px-6 py-5 text-left text-sm font-bold uppercase tracking-wider">Propietario</th>
+          <tr class="bg-gradient-to-r from-purple-700 to-purple-900 text-white">
+            <th class="px-6 py-5 text-left text-sm font-bold uppercase tracking-wider">Conductor</th>
             <th class="px-6 py-5 text-center text-sm font-bold uppercase tracking-wider">Placa</th>
             <th class="px-6 py-5 text-center text-sm font-bold uppercase tracking-wider">Asistencia</th>
             <th class="px-6 py-5 text-center text-sm font-bold uppercase tracking-wider">Pago</th>
@@ -47,40 +27,24 @@
             <th class="px-6 py-5 text-center text-sm font-bold uppercase tracking-wider">Observaciones</th>
           </tr>
         </thead>
-        <tbody id="filas" class="bg-white divide-y divide-gray-200">
-          <!-- Las filas se llenan con JavaScript -->
-        </tbody>
+        <tbody id="filas" class="bg-white divide-y divide-gray-200"></tbody>
       </table>
     </div>
-
-    <button class="print-btn" onclick="window.print()">
-      IMPRIMIR TABLA
-    </button>
+    <button class="print-btn" onclick="window.print()">IMPRIMIR TABLA</button>
   </div>
 
   <script>
-    // Cargar registros de Lusitania del día actual
     const hoy = new Date().toISOString().slice(0,10);
     const registros = JSON.parse(localStorage.getItem('parkRegistros') || '[]')
-      .filter(r => r.fecha === hoy && r.tipo === 'Lusitania');
+      .filter(r => r.fecha === hoy && r.tipo === 'Flotax');
 
     const tbody = document.getElementById('filas');
+    const orden = ["Juan", "Jorge", "Edwin", "Héctor", "Don Jorge", "Josué", "Wilmer"];
 
-    // Orden exacto como en tu tabla física
-    const ordenLusitania = [
-      "Giovanni", "Robinson", "Omar", "Joan", "Gerente", "Livardo", "Lechero",
-      "Fabián", "Juicioso", "Pollo", "Herson", "Inocencio", "Crespo", "César",
-      "Campanita", "Andrés", "Kiko", "Steven", "Amigo Monachón", "Caleño", "Iznaldo"
-    ];
-
-    ordenLusitania.forEach(nombre => {
+    orden.forEach(nombre => {
       const reg = registros.find(r => r.persona === nombre) || {};
       const fila = document.createElement('tr');
-      
-      // Resaltar si entró hoy
-      if (reg.placa) {
-        fila.className = 'bg-green-50 font-semibold';
-      }
+      if (reg.placa) fila.className = 'bg-green-50 font-semibold';
 
       fila.innerHTML = `
         <td class="px-6 py-5 text-left text-gray-800">${nombre}</td>

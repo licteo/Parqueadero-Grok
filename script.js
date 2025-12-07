@@ -91,15 +91,26 @@ document.getElementById('entryForm').addEventListener('submit', function (e) {
   const tipo = document.getElementById('tipo').value;
   let persona = 'No aplica';
 
-  if (tipo === 'Pintores y mecánicos') {
-    persona = document.getElementById('nombrePintor').value || 'No seleccionado';
-  } else if (tipo === 'Lusitania') {
-    persona = document.getElementById('nombreLusitania').value.split('|')[0];
-  } else if (tipo === 'Cootrander') {
-    persona = document.getElementById('nombreCootrander').value.split('|')[0];
-  } else if (tipo === 'Flotax') {
-    persona = document.getElementById('nombreFlotax').value.split('|')[0];
-  }
+ // ABRIR TABLA SEGÚN LA EMPRESA
+if (tipo === 'Lusitania') {
+  window.open('tabla-lusitania.html', '_blank');
+} else if (tipo === 'Cootrander') {
+  window.open('tabla-cootrander.html', '_blank');
+} else if (tipo === 'Flotax') {
+  window.open('tabla-flotax.html', '_blank');
+} else if (tipo === 'Pintores y mecánicos') {
+  window.open('tabla-pintores.html', '_blank');
+} else if (tipo === 'Particulares') {
+  window.open('tabla-particulares.html', '_blank');
+} else if (tipo === 'Motos') {
+  window.open('tabla-motos.html', '_blank');
+} else {
+  const params = new URLSearchParams(registro);
+  window.open('ticket.html?' + params.toString(), '_blank');
+}
+
+
+
 
   const registro = {
     fecha: document.getElementById('fecha').value,
