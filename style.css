@@ -1,0 +1,108 @@
+* { margin:0; padding:0; box-sizing:border-box; font-family:system-ui,-apple-system,sans-serif; }
+body { background:#f8f9fc; color:#333; min-height:100vh; padding-bottom:80px; }
+
+header {
+  background:#2196F3;
+  color:white;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:1000;
+  box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+header h1 { font-size:1.4rem; font-weight:600; }
+header button { background:none; border:none; color:white; font-size:1.8rem; }
+
+main { margin-top:70px; padding:20px; }
+h2 { text-align:center; margin:20px 0 30px; color:#1976D2; font-size:1.3rem; }
+
+form label {
+  display:block;
+  margin:20px 0 8px;
+  font-weight:600;
+  color:#333;
+  font-size:0.95rem;
+}
+
+input, select, textarea {
+  width:100%;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  background:#fff;
+  font-size:1rem;
+}
+
+.time-input {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.time-input input {
+  flex:1;
+  background:#f9f9f9;
+  color:#1976D2;
+  font-weight:bold;
+}
+.clock-btn {
+  background:#2196F3;
+  color:white;
+  border:none;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  font-size:1.5rem;
+  cursor:pointer;
+}
+
+.buttons {
+  margin-top:40px;
+  display:flex;
+  gap:15px;
+}
+.confirm {
+  flex:1;
+  background:#2196F3;
+  color:white;
+  border:none;
+  padding:16px;
+  font-size:1.1rem;
+  font-weight:bold;
+  border-radius:10px;
+  cursor:pointer;
+}
+.cancel {
+  flex:1;
+  background:#eee;
+  color:#555;
+  border:none;
+  padding:16px;
+  font-size:1.1rem;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.bottom-nav {
+  position:fixed;
+  bottom:0; left:0; right:0;
+  background:white;
+  display:flex;
+  border-top:1px solid #ddd;
+  padding:10px 0;
+  box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+}
+.bottom-nav button {
+  flex:1;
+  background:none;
+  border:none;
+  padding:12px;
+  font-size:0.9rem;
+  color:#888;
+}
+.bottom-nav button.active {
+  color:#2196F3;
+  font-weight:bold;
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial y Salida - Park Smart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #f7f9fc; padding: 20px; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    .btn-salida { background: #e74c3c; }
+    .btn-salida:hover { background: #c0392b; }
+    .total { font-size: 2rem; font-weight: bold; color: #27ae60; }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-4xl font-bold text-center text-blue-800 my-10">Historial del Día - Salida y Cobro</h1>
+    
+    <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+      <div class="flex flex-wrap gap-4 justify-center mb-8">
+        <input type="date" id="filtroFecha" class="px-6 py-3 border rounded-lg text-lg" value="">
+        <button onclick="filtrar()" class="px-8 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700">Filtrar Día</button>
+        <button onclick="location.reload()" class="px-8 py-3 bg-gray-600 text-white rounded-lg font-bold hover:bg-gray-700">Hoy</button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="vehiculos"></div>
+    </div>
+
+    <div class="text-center">
+      <h2 class="total mb-4">Total del Día: $<span id="totalDia">0</span></h2>
+      <button onclick="window.print()" class="px-10 py-4 bg-green-600 text-white text-xl font-bold rounded-xl hover:bg-green-700">
+        IMPRIMIR REPORTE DEL DÍA
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const TARIFAS = {
+      'Particulares': 3000,   // por hora o fracción
+      'Motos': 1500,
+      'Lusitania': 0,         // gratis
+      'Cootrander': 0,
+      'Flotex': 0,
+      'Pintores y mecánicos': 0,
+      'default': 2500
+    };
+
+    function calcularValor(horaEntrada, horaSalida = new Date(), tipo) {
+      if (TARIFAS[tipo] === 0) return 0;
+      const entrada = new Date(`2000-01-01 ${horaEntrada}`);
+      const salida = horaSalida instanceof Date ? horaSalida : new Date(`2000-01-01 ${horaSalida}`);
+      const minutos = Math.ceil((salida - entrada) / 60000);
+      const horas = Math.ceil(minutos / 60);
+      return horas * TARIFAS[tipo];
+    }
+
+    function registrarSalida(id) {
+      let registros = JSON.parse(localStorage.getItem('parkRegistros') || '[]');
+      const ahora = new Date();
+      const horaSalida = ahora.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+
+      const reg = registros.find(r => r.timestamp === id);
+      if (!reg) return;
+
+      reg.horaSalida = horaSalida;
+      reg.valorCobrado = calcularValor(reg.horaEntrada, ahora, reg.tipo);
+
+      localStorage.setItem('parkRegistros', JSON.stringify(registros));
+      alert(`Salida registrada: ${reg.placa}\nHora: ${horaSalida}\nValor: $${reg.valorCobrado.toLocaleString()}`);
+      mostrarVehiculos();
+    }
+
+    function mostrarVehiculos() {
+      const fechaFiltro = document.getElementById('filtroFecha').value || new Date().toISOString().slice(0,10);
+      let registros = JSON.parse(localStorage.getItem('parkRegistros') || '[]')
+        .filter(r => r.fecha === fechaFiltro)
+        .sort((a,b) => b.timestamp - a.timestamp);
+
+      const contenedor = document.getElementById('vehiculos');
+      contenedor.innerHTML = '';
+
+      let totalDia = 0;
+
+      if (registros.length === 0) {
+        contenedor.innerHTML = `<p class="col-span-3 text-center text-2xl text-gray-500 py-20">No hay registros en esta fecha</p>`;
+      }
+
+      registros.forEach(reg => {
+        const valor = reg.valorCobrado || calcularValor(reg.horaEntrada, new Date(), reg.tipo);
+        if (reg.valorCobrado) totalDia += reg.valorCobrado;
+
+        const card = document.createElement('div');
+        card.className = `bg-white rounded-xl shadow-lg p-6 border-l-8 ${reg.horaSalida ? 'border-green-500' : 'border-blue-500'} transition-all hover:shadow-2xl`;
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="text-2xl font-bold text-gray-800">${reg.placa}</h3>
+            <span class="text-sm font-medium ${reg.horaSalida ? 'text-green-600' : 'text-blue-600'}">
+              ${reg.tipo}
+            </span>
+          </div>
+          <div class="space-y-2 text-gray-700">
+            <p><strong>Entrada:</strong> ${reg.horaEntrada} ${reg.horaSalida ? `<span class="text-green-600">→ ${reg.horaSalida}</span>` : ''}</p>
+            <p><strong>Conductor/Prop:</strong> ${reg.persona !== 'No aplica' ? reg.persona : reg.propietario}</p>
+            <p><strong>Valor a cobrar:</strong> <span class="text-2xl font-bold text-green-600">$${valor.toLocaleString()}</span></p>
+          </div>
+          ${!reg.horaSalida ? `
+            <button onclick="registrarSalida('${reg.timestamp}')" 
+                    class="mt-6 w-full py-4 btn-salida text-white font-bold text-xl rounded-lg hover:shadow-lg transition">
+              REGISTRAR SALIDA Y COBRAR
+            </button>
+          ` : `
+            <div class="mt-6 text-center text-green-600 font-bold text-xl">
+              ✓ SALIDA REGISTRADA - $${valor.toLocaleString()} cobrados
+            </div>
+          `}
+        `;
+        contenedor.appendChild(card);
+      });
+
+      document.getElementById('totalDia').textContent = totalDia.toLocaleString();
+    }
+
+    function filtrar() {
+      mostrarVehiculos();
+    }
+
+    // Cargar fecha de hoy por defecto
+    document.getElementById('filtroFecha').value = new Date().toISOString().slice(0,10);
+    mostrarVehiculos();
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pintores y Mecánicos - Park Smart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', 'Segoe UI', sans-serif; background: #f7fafc; padding: 20px; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    .print-btn { margin: 30px auto; display: block; padding: 14px 40px; background: #2196F3; color: white; font-weight: bold; border-radius: 12px; box-shadow: 0 4px 15px rgba(33,150,243,0.3); cursor: pointer; }
+    @media print { body { background: white; padding: 10px; } .print-btn { display: none; } }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold text-center text-blue-800 mb-8 mt-10">Pintores y Mecánicos</h1>
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+      <table class="w-full table-auto">
+        <thead>
+          <tr class="bg-gradient-to-r from-red-700 to-red-900 text-white">
+            <th class="px-6 py-5 text-left">Nombre</th>
+            <th class="px-6 py-5 text-center">Placa</th>
+            <th class="px-6 py-5 text-center">Asistencia</th>
+            <th class="px-6 py-5 text-center">Pago</th>
+            <th class="px-6 py-5 text-center">Hora Entrada</th>
+            <th class="px-6 py-5 text-center">Notas</th>
+          </tr>
+        </thead>
+        <tbody id="filas" class="bg-white divide-y divide-gray-200"></tbody>
+      </table>
+    </div>
+    <button class="print-btn" onclick="window.print()">IMPRIMIR LISTA</button>
+  </div>
+
+  <script>
+    const hoy = new Date().toISOString().slice(0,10);
+    const registros = JSON.parse(localStorage.getItem('parkRegistros') || '[]')
+      .filter(r => r.fecha === hoy && r.tipo === 'Pintores y mecánicos');
+
+    const tbody = document.getElementById('filas');
+    registros.forEach(reg => {
+      const fila = document.createElement('tr');
+      fila.className = 'bg-yellow-50';
+      fila.innerHTML = `
+        <td class="px-6 py-5 text-left font-semibold">${reg.persona}</td>
+        <td class="px-6 py-5 text-center font-bold text-blue-700">${reg.placa}</td>
+        <td class="px-6 py-5 text-center text-green-600 font-bold">${reg.asistencia}</td>
+        <td class="px-6 py-5 text-center text-green-600 font-bold">${reg.pago}</td>
+        <td class="px-6 py-5 text-center">${reg.horaEntrada}</td>
+        <td class="px-6 py-5 text-center italic text-gray-600">${reg.notas || ''}</td>
+      `;
+      tbody.appendChild(fila);
+    });
+  </script>
+</body>
+</html>

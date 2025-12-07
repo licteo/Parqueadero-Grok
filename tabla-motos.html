@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motos - Park Smart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', 'Segoe UI', sans-serif; background: #f7fafc; padding: 20px; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    .print-btn { margin: 30px auto; display: block; padding: 14px 40px; background: #2196F3; color: white; font-weight: bold; border-radius: 12px; box-shadow: 0 4px 15px rgba(33,150,243,0.3); cursor: pointer; }
+    @media print { body { background: white; padding: 10px; } .print-btn { display: none; } .shadow-lg { box-shadow: none; } }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-4xl font-bold text-center text-blue-800 mb-8 mt-10">Motos</h1>
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+      <table class="w-full table-auto">
+        <thead>
+          <tr class="bg-gradient-to-r from-orange-700 to-orange-900 text-white">
+            <th class="px-6 py-5 text-left text-sm font-bold uppercase tracking-wider">Propietario</th>
+            <th class="px-6 py-5 text-center text-sm font-bold uppercase tracking-wider">Placa</th>
+            <th class="px-6 py-5 text-center text-sm font-bold uppercase tracking-wider">Hora Entrada</th>
+            <th class="px-6 py-5 text-center text-sm font-bold uppercase tracking-wider">Pago</th>
+            <th class="px-6 py-5 text-center text-sm font-bold uppercase tracking-wider">Hora Salida</th>
+            <th class="px-6 py-5 text-center text-sm font-bold uppercase tracking-wider">Notas</th>
+          </tr>
+        </thead>
+        <tbody id="filas" class="bg-white divide-y divide-gray-200"></tbody>
+      </table>
+    </div>
+    <button class="print-btn" onclick="window.print()">IMPRIMIR LISTA</button>
+  </div>
+
+  <script>
+    const hoy = new Date().toISOString().slice(0,10);
+    const registros = JSON.parse(localStorage.getItem('parkRegistros') || '[]')
+      .filter(r => r.fecha === hoy && r.tipo === 'Motos')
+      .sort((a,b) => a.horaEntrada.localeCompare(b.horaEntrada));
+
+    const tbody = document.getElementById('filas');
+
+    if (registros.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-10 text-center text-gray-500 text-xl">No hay motos registradas hoy</td></tr>`;
+    } else {
+      registros.forEach(reg => {
+        const fila = document.createElement('tr');
+        fila.className = 'hover:bg-orange-50 transition duration-150';
+        fila.innerHTML = `
+          <td class="px-6 py-5 text-left font-medium">${reg.propietario || 'Sin nombre'}</td>
+          <td class="px-6 py-5 text-center font-bold text-orange-700 text-lg">${reg.placa}</td>
+          <td class="px-6 py-5 text-center">${reg.horaEntrada}</td>
+          <td class="px-6 py-5 text-center text-green-600 font-bold">${reg.pago}</td>
+          <td class="px-6 py-5 text-center text-red-600">${reg.horaSalida || '—'}</td>
+          <td class="px-6 py-5 text-center text-gray-600 italic">${reg.notas || '—'}</td>
+        `;
+        tbody.appendChild(fila);
+      });
+    }
+  </script>
+</body>
+</html>

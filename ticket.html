@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ticket Park Smart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      text-align: center;
+    }
+    .ticket {
+      background: white;
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      border: 3px solid #2196F3;
+    }
+    h1 {
+      color: #2196F3;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 1.1rem;
+    }
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+    td:first-child {
+      font-weight: bold;
+      color: #333;
+      text-align: left;
+      width: 40%;
+    }
+    td:last-child {
+      text-align: right;
+      color: #1976D2;
+      font-weight: bold;
+    }
+    .placa {
+      font-size: 2.5rem !important;
+      color: #2196F3 !important;
+      letter-spacing: 5px;
+    }
+    .empresa {
+      font-size: 1.6rem;
+      color: #E91E63;
+      margin: 15px 0;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: #777;
+    }
+    .print-btn {
+      margin-top: 20px;
+      padding: 12px 30px;
+      background: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    @media print {
+      body { background: white; }
+      .print-btn { display: none; }
+      .ticket { border: none; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ticket">
+    <h1>PARK SMART</h1>
+    <div class="empresa" id="empresa"></div>
+    <div class="placa" id="placa"></div>
+
+    <table>
+      <tr><td>Fecha</td><td id="fecha"></td></tr>
+      <tr><td>Hora Entrada</td><td id="horaEntrada"></td></tr>
+      <tr><td>Conductor</td><td id="conductor"></td></tr>
+      <tr><td>Tipo</td><td id="tipo"></td></tr>
+      <tr><td>Propietario</td><td id="propietario"></td></tr>
+      <tr><td>Asistencia</td><td id="asistencia"></td></tr>
+      <tr><td>Pago</td><td id="pago"></td></tr>
+      <tr><td>Notas</td><td id="notas"></td></tr>
+    </table>
+
+    <div class="footer">
+      Gracias por usar Park Smart<br>
+      <span id="fechaHora"></span>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">IMPRIMIR TICKET</button>
+  </div>
+
+  <script>
+    // Recibir datos desde la página principal
+    const params = new URLSearchParams(window.location.search);
+    
+    document.getElementById('empresa').textContent = params.get('tipo') || 'Particular';
+    document.getElementById('placa').textContent = params.get('placa') || '---';
+    document.getElementById('fecha').textContent = params.get('fecha');
+    document.getElementById('horaEntrada').textContent = params.get('horaEntrada') || '--:--';
+    document.getElementById('conductor').textContent = params.get('persona') || 'No registrado';
+    document.getElementById('tipo').textContent = params.get('tipo');
+    document.getElementById('propietario').textContent = params.get('propietario') || 'No registrado';
+    document.getElementById('asistencia').textContent = params.get('asistencia');
+    document.getElementById('pago').textContent = params.get('pago');
+    document.getElementById('notas').textContent = params.get('notas') || 'Sin observaciones';
+
+    // Fecha y hora actual abajo
+    const ahora = new Date().toLocaleString('es-CO');
+    document.getElementById('fechaHora').textContent = 'Generado: ' + ahora;
+  </script>
+</body>
+</html>

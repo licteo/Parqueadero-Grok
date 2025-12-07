@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Park Smart</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="icon" href="icons/icon-192.png"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <meta name="theme-color" content="#2196F3"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header>
+    <button id="menu">☰</button>
+    <h1>PARK SMART</h1>
+    <button id="user">👤</button>
+  </header>
+
+  <main>
+    <h2>Ingrese los Detalles del Vehículo</h2>
+
+    <form id="entryForm">
+      <label>Fecha:</label>
+      <input type="date" id="fecha" required />
+
+
+
+
+      <!-- Tipo de Vehículo Dropdown ------------->
+      <label>Tipo de Vehículo</label>
+<select id="tipo" required>
+  <option value="">Seleccionar</option>
+  <option value="Pintores y mecánicos">Pintores y mecánicos</option>
+  <option value="Lusitania">Lusitania</option>
+  <option value="Cootrander">Cootrander</option>
+  <option value="Flotax">Flotax</option>
+  <option value="San Juan">San Juan</option>
+  <option value="Unitransa">Unitransa</option>
+  <option value="Escolar">Escolar</option>
+  <option value="Particulares">Particulares</option>
+  <option value="Motos">Motos</option>
+</select>
+
+
+<!-- Campo que aparece solo si se selecciona "Pintores y mecánicos" -->
+<div id="pintoresContainer" style="display:none; margin-top:15px;">
+  <label>Nombre del Pintor / Mecánico</label>
+  <select id="nombrePintor">
+    <option value="" disabled selected>Seleccionar persona</option>
+    <option value="Álvaro">Álvaro</option>
+    <option value="David">David</option>
+    <option value="Pedro">Pedro</option>
+    <option value="Salvador">Salvador</option>
+    <option value="Garavito">Garavito</option>
+    <option value="Lucho">Lucho</option>
+    <option value="Cristian">Cristian</option>
+    <option value="Miguel">Miguel</option>
+    <option value="Moisés">Moisés</option>
+  </select>
+</div>
+
+
+<!-- Lusitania con placa automática -->
+<div id="lusitaniaContainer" style="display:none; margin-top:15px;">
+  <label>Conductor Lusitania</label>
+  <select id="nombreLusitania" required>
+    <option value="" disabled selected>Seleccionar conductor</option>
+    <option value="Giovanni|0805">Giovanni - 0805</option>
+    <option value="Robinson|609">Robinson - 609</option>
+    <option value="Omar|625">Omar - 625</option>
+    <option value="Joan|678">Joan - 678</option>
+    <option value="Gerente|689">Gerente - 689</option>
+    <option value="Livardo|742">Livardo - 742</option>
+    <option value="Lechero|605">Lechero - 605</option>
+    <option value="Fabián|749">Fabián - 749</option>
+    <option value="Juicioso|755">Juicioso - 755</option>
+    <option value="Pollo|780">Pollo - 780</option>
+    <option value="Herson|791">Herson - 791</option>
+    <option value="Inocencio|661">Inocencio - 661</option>
+    <option value="Crespo|">Crespo (sin placa fija)</option>
+    <option value="César|308">César - 308</option>
+    <option value="Campanita|266">Campanita - 266</option>
+    <option value="Andrés|">Andrés (sin placa fija)</option>
+    <option value="Kiko|SUF-551">Kiko - SUF-551</option>
+    <option value="Steven|440">Steven - 440</option>
+    <option value="Amigo Monachón|213">Amigo Monachón - 213</option>
+    <option value="Caleño|094">Caleño - 094</option>
+    <option value="Iznaldo|336">Iznaldo - 336</option>
+  </select>
+</div>
+
+
+
+
+<!-- Cootrander con placa automática -->
+<div id="cootranderContainer" style="display:none; margin-top:15px;">
+  <label>Conductor Cootrander</label>
+  <select id="nombreCootrander" required>
+    <option value="" disabled selected>Seleccionar conductor</option>
+    <option value="John|020">John - 020</option>
+    <option value="William|060">William - 060</option>
+    <option value="Devinson|218">Devinson - 218</option>
+    <option value="Alex|316">Alex - 316</option>
+    <option value="Robinson|352">Robinson - 352</option>
+    <option value="Andrés|382">Andrés - 382</option>
+    <option value="Fabián|440">Fabián - 440</option>
+    <option value="José Cuadros|206">José Cuadros - 206</option>
+    <option value="Paisa|2005">Paisa - 2005</option>
+    <option value="Wellington|318">Wellington - 318</option>
+  </select>
+</div>
+
+
+
+
+
+<!-- Flotax con placa automática -->
+<div id="flotaxContainer" style="display:none; margin-top:15px;">
+  <label>Conductor Flotax</label>
+  <select id="nombreFlotax" required>
+    <option value="" disabled selected>Seleccionar conductor</option>
+    <option value="Juan|147">Juan - 147</option>
+    <option value="Jorge|070">Jorge - 070</option>
+    <option value="Edwin|223">Edwin - 223</option>
+    <option value="Héctor|241">Héctor - 241</option>
+    <option value="Don Jorge|327">Don Jorge - 327</option>
+    <option value="Josué|118">Josué - 118</option>
+    <option value="Wilmer|077">Wilmer - 077</option>
+  </select>
+</div>
+
+
+
+
+
+
+
+
+      <label>Propietario</label>
+      <input type="text" id="propietario" placeholder="Nombre del dueño (opcional)" />
+
+      <label>Placa / Matrícula</label>
+      <input type="text" id="placa" placeholder="ABC123" required style="text-transform:uppercase;" />
+
+      <label>Asistencia</label>
+      <select id="asistencia">
+        <option value="No">No</option>
+        <option value="Sí">Sí</option>
+      </select>
+
+
+
+
+
+
+
+      <label>Pago</label>
+<select id="pago" required>
+  <option value="" disabled selected>¿Ya pagó?</option>
+  <option value="Sí">Sí</option>
+  <option value="No">No</option>
+</select>
+
+
+
+
+
+
+      <label class="time-label">Entrada de Vehículo</label>
+<div class="time-input">
+  <input type="time" id="horaEntrada" required />
+  <button type="button" class="clock-btn" onclick="setCurrentTime('horaEntrada')">Reloj</button>
+</div>
+
+<label class="time-label">Salida de Vehículo</label>
+<div class="time-input">
+  <input type="time" id="horaSalida" />
+  <button type="button" class="clock-btn" onclick="setCurrentTime('horaSalida')">Reloj</button>
+</div>
+
+
+
+
+
+
+
+
+      <label>Notas / Observaciones</label>
+      <textarea id="notas" rows="3" placeholder="Ej. Llaves guardadas, casco, daños..."></textarea>
+
+      <div class="buttons">
+        <button type="submit" class="confirm">CONFIRMAR ENTRADA</button>
+        <button type="button" class="cancel" onclick="location.reload()">CANCELAR</button>
+      </div>
+    </form>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="active">Inicio</button>
+    <button>Historial</button>
+    <button>Perfil</button>
+  </nav>
+
+  <script src="script.js"></script>
+</body>
+</html>
